@@ -3,6 +3,7 @@
 <head>
 <title>My first Web Page</title>
 <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
 
@@ -11,6 +12,7 @@
 
 <!-- Brand of Website-->
 <header style="font-size: 60px; color: #fff;">MY Web Site Brand</header>
+
 <!-- Main Navigation -->
 <nav>
    <ul>
@@ -23,17 +25,19 @@
 
 <!-- Main Content -->
 <main>
-    <h1>My Forth Heading</h1>
-    <p>My Forth paragraph.</p>
+    <h1>My Fourth Heading</h1>
+    <p>My Fourth paragraph.</p>
     <ul id="album">
-        <!--<li id="photo"><img src="images/winterland1.jpg"></li>
-        <li id="photo"><img src="images/winterland2.jpg"></li>
-        <li id="photo"><img src="images/winterland3.jpg"></li>
-        <li id="photo"><img src="images/winterland4.jpg"></li>
-        <li id="photo"><img src="images/winterland5.jpg"></li>
-        <li id="photo"><img src="images/winterland6.jpg"></li>-->
+        <!-- Images will be dynamically added here by JavaScript -->
     </ul>
 </main><!-- End Main Content -->
+
+<!-- Info Box -->
+<div id="infoBox">
+  <h2 id="infoHeading"></h2>
+  <p id="infoText"></p>
+  <a id="closeInfoBox">Click This To Close</a>
+</div>
 
 <!-- Footer Information -->
 <footer>&copy; Copyright 2024</footer>
@@ -45,17 +49,60 @@
     var fileNames = []; // Declare an empty element to store image file names
     var imageList = []; // Declare an empty array to store HTML list that contains an image
     var image; // Declare an empty variable to store the assembled image list codes
-    var openList = "<li id='photo'>"; // Declare a variable to contain the open list tag
+    var openList = "<li>"; // Declare a variable to contain the open list tag
     var closeList = "</li>"; // Declare a variable to contain the close list tag
-    //creat a loop to create 6 images starting with index of 0
+
+    // Info box content arrays
+    var headings = ["Snow Land", "Wintery Road", "Beautiful Winter", "After an Overnight Snowstorm", "Snowy Drive", "Winter in the Country"];
+    var texts = [
+        "Most of plants and animals are having their hibernation period, so winter is not full of bright colors, but who says that white, snowy and a bit magical winter is not cool?",
+        "The most beautiful phenomenon of the winter is snow! You know that the snowflakes are never repeat themselves, they have amazing shapes, that different with each new snowflake.",
+        "Experience the tranquil beauty of a snowy landscape, where every branch is dusted with a layer of glistening white.",
+        "After an overnight snowstorm, the world is transformed into a pristine winter wonderland.",
+        "Snowy drives on the road, where the landscape is blanketed in a serene white, offering a picturesque view.",
+        "Winter in the country brings a calm and peaceful atmosphere, with snow-covered fields and quiet roads."
+    ];
+
+    // Create a loop to create 6 images starting with an index of 0
     for (var i = 0; i < 6; i++) {
-    fileNames.push("winterland"+(i+1));//create image file name and store in the array
-    photos.push("<img src='images/" + fileNames[i] + ".jpg'>"); // Assemble file name into image element and store in an array
-    image = openList + photos[i] + closeList; // Assemble image element from array with list elements and store in a variable
-    imageList.push(image); // Store (push) the assembled list codes into an array
+        fileNames.push("winterland" + (i + 1)); // Create image file name and store in the array
+        photos.push("<img src='images/" + fileNames[i] + ".jpg' alt='" + headings[i] + "'>"); // Assemble file name into image element and store in an array
+        image = openList + photos[i] + 
+                "<div class='textOverlay'>" + headings[i] + "</div>" + 
+                "<div class='additionalOverlay'>" + texts[i] + "</div>" + 
+                closeList; // Assemble image element from array with list elements and store in a variable
+        imageList.push(image); // Store (push) the assembled list codes into an array
+    }
+
     // Display all six image codes stored in the array
-    document.getElementById("album").innerHTML = imageList;
-}   
+    document.getElementById("album").innerHTML = imageList.join("");
+
+    // Function to show text overlay
+    function showTextOverlay(index) {
+        document.querySelectorAll(".textOverlay")[index].style.visibility = "visible";
+        document.querySelectorAll(".additionalOverlay")[index].style.visibility = "visible";
+    }
+
+    // Function to hide text overlay
+    function hideTextOverlay() {
+        document.querySelectorAll(".textOverlay").forEach(el => el.style.visibility = "hidden");
+        document.querySelectorAll(".additionalOverlay").forEach(el => el.style.visibility = "hidden");
+    }
+
+    // Add event listeners to images
+    document.querySelectorAll("#album li img").forEach((img, index) => {
+        img.addEventListener("click", () => {
+            hideTextOverlay(); // Hide any visible overlays first
+            showTextOverlay(index); // Show the overlay for the clicked image
+        });
+    });
+
+    // Add event listeners to close the overlay when clicking anywhere outside the image
+    document.addEventListener("click", function(event) {
+        if (!event.target.closest("#album li")) {
+            hideTextOverlay();
+        }
+    });
 </script>
 </body>
 </html>
