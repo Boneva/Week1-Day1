@@ -36,13 +36,14 @@
 <div id="infoBox">
   <h2 id="infoHeading"></h2>
   <p id="infoText"></p>
-  <a id="closeInfoBox">Click This To Close</a>
+
 </div>
 
 <!-- Footer Information -->
 <footer>&copy; Copyright 2024</footer>
 
 </div><!-- End Container -->
+
 
 <script>
     var photos = []; // Declare an empty array to store image elements
@@ -69,7 +70,7 @@
         photos.push("<img src='images/" + fileNames[i] + ".jpg' alt='" + headings[i] + "'>"); // Assemble file name into image element and store in an array
         image = openList + photos[i] + 
                 "<div class='textOverlay'>" + headings[i] + "</div>" + 
-                "<div class='additionalOverlay'>" + texts[i] + "</div>" + 
+                "<div class='additionalOverlay'>" + texts[i] + "<a class='closeOverlay'>Click This To Close</a></div>" + 
                 closeList; // Assemble image element from array with list elements and store in a variable
         imageList.push(image); // Store (push) the assembled list codes into an array
     }
@@ -95,6 +96,13 @@
             hideTextOverlay(); // Hide any visible overlays first
             showTextOverlay(index); // Show the overlay for the clicked image
         });
+    });
+
+    // Add event listeners to close the overlay when clicking the close link
+    document.addEventListener("click", function(event) {
+        if (event.target.classList.contains('closeOverlay')) {
+            hideTextOverlay();
+        }
     });
 
     // Add event listeners to close the overlay when clicking anywhere outside the image
